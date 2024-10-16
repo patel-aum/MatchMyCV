@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import AuthPage from './components/AuthPage';
+import Dashboard from './components/Dashboard'; 
+import ResultsPage from './components/ResultsPage'; // Import the Results page
 
-function App() {
+const App = () => {
+  const isLoggedIn = localStorage.getItem('session') !== null;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<AuthPage />} />
+        <Route 
+          path="/dashboard" 
+          element={isLoggedIn ? <Dashboard /> : <Navigate to="/" />} 
+        />
+        <Route 
+          path="/results" 
+          element={isLoggedIn ? <ResultsPage /> : <Navigate to="/" />} 
+        />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
+
